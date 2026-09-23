@@ -54,27 +54,6 @@ nvim
 - LSP：`terraform-ls`、`pyright`、`typescript-language-server`、`sqlls`、`bash-language-server`
 - 格式化：`black`（Python）、`prettier`（TS/JS）、`shfmt`（Bash）、`sqlfluff`（SQL）、`terraform fmt`（需另外裝 Terraform CLI）
 
-## 常用快速鍵
-
-Leader 鍵是空白鍵。完整清單按 `<leader>?`，或直接看左下角的小抄面板。
-
-| 按鍵 | 功能 |
-| --- | --- |
-| `<leader>e` | 開關檔案樹 |
-| `<leader>f` | 格式化目前檔案（存檔時也會自動格式化）|
-| `Shift-h` / `Shift-l` | 切換上一個 / 下一個分頁 |
-| `<leader>bd` | 關閉目前分頁（有未存檔內容會先詢問）|
-| `Ctrl-t` | 開關下方終端機 |
-| `Ctrl-g` | 開啟 Lazygit |
-| `<leader>gs` | 移到 Git 變更面板（`Enter` 開檔）|
-| `<leader>gr` | 手動更新 Git 變更清單 |
-| `<leader>k` | 移到快速鍵小抄面板 |
-| `gd` / `gr` / `K` | 跳到定義 / 找引用 / 查看說明 |
-| `<leader>rn` / `<leader>ca` | 重新命名 / 修正建議 |
-| `gcc` / `gc` | 註解整行 / 註解選取範圍 |
-
-在檔案樹上：`gy` 複製完整路徑、`Y` 複製相對路徑、`y` 複製檔名，都會進系統剪貼簿。
-
 ## 檔案結構
 
 ```
