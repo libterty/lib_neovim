@@ -88,29 +88,3 @@ lua/config/
   safe-close.lua              安全關閉分頁
 lua/plugins/                  各外掛設定，一個檔案一個主題
 ```
-
-## 設計取捨
-
-### 為什麼不直接用 `:bdelete`
-
-Vim 的 `:bdelete` 會連帶關閉所有正在顯示該 buffer 的視窗。關掉目前在看的分頁時，編輯區視窗會跟著消失、檔案樹撐滿畫面，看起來像所有分頁都被關掉了。`safe-close.lua` 改成先把視窗切到別的檔案再刪 buffer，同時擋掉對檔案樹、小抄、終端機的誤刪（bufferline 預設的 `close_command` 不檢查對象）。
-
-### 面板為什麼是浮動視窗
-
-分割視窗會參與版面配置。檔案樹在開啟資料夾時佔滿整個畫面，開檔案後縮成側邊欄，這個過程會把分割出來的面板擠到奇怪的位置，實測會變成中間一整欄。浮動視窗不參與版面配置，所以不會被重排。
-
-### nvim-tree / bufferline / toggleterm 不延遲載入
-
-nvim-tree 要在 Neovim 處理啟動參數之前就載入，才接管得到 `nvim <目錄>` 產生的目錄 buffer，任何 lazy trigger 都會晚一步。另外兩個是核心 UI，省下的啟動時間換來鍵位時序的不確定性並不划算。
-
-### nvim-treesitter 用 `main` 分支
-
-`master` 分支在 2025 年公告封存，配 Neovim 0.11+ 會在語法注入時出錯，實測 markdown 會崩潰。`main` 分支需要外部的 `tree-sitter` CLI 來編譯解析器。
-
-### Git 變更面板每 3 秒輪詢
-
-只靠 `BufWritePost` 抓不到 nvim 以外的改動，例如其他終端機或 AI agent 改的檔案。輪詢做了三層節流：面板沒顯示不跑、上次還沒跑完不重複發、內容沒變不重畫。實測每次 `git status` 約 0.03 秒。
-
-### terraform-ls 關掉 codelens
-
-`nvim-lspconfig` 的 terraformls 設定會在 `on_attach` 開 codelens，但 Neovim 0.12.5 的 codelens 讀行號時沒做邊界檢查（`runtime/lua/vim/lsp/codelens.lua:248`），buffer 變短就會拋 Index out of bounds 並中斷畫面繪製，例如切分支或檔案被外部改動後自動重新載入。這裡覆蓋掉那個 `on_attach`，上游修好後可以拿掉。
