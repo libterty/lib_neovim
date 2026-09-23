@@ -38,6 +38,15 @@ return {
       local capabilities = require("cmp_nvim_lsp").default_capabilities()
       vim.lsp.config("*", { capabilities = capabilities })
 
+      -- nvim-lspconfig 的 terraformls 設定會在 on_attach 裡開啟 codelens，
+      -- 但 Neovim 0.12.5 的 codelens 讀取行號時沒有邊界檢查
+      -- （runtime/lua/vim/lsp/codelens.lua:248），buffer 變短時就會
+      -- 「Index out of bounds」崩潰——例如切分支或檔案被外部改動後重新載入。
+      -- 覆蓋掉那個 on_attach，等上游修好再拿掉。
+      vim.lsp.config("terraformls", {
+        on_attach = function() end,
+      })
+
       vim.api.nvim_create_autocmd("LspAttach", {
         callback = function(args)
           local opts = { buffer = args.buf }
