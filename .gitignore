@@ -1,0 +1,15 @@
+# lazy.nvim 安裝的外掛原始碼（由 lazy-lock.json 還原，不進版控）
+lazy/
+
+# Mason 下載的 LSP / formatter 執行檔（由設定自動安裝，不進版控）
+mason/
+
+# Neovim 執行期產生的檔案
+*.log
+shada/
+sessions/
+undo/
+spell/
+
+# macOS
+.DS_Store
